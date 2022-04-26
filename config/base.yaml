@@ -1,0 +1,52 @@
+seed: 61
+log_path: ./log/
+config_path: ./config/
+weight_path: ./weight/
+header: epoch train_loss train_acc val_loss val_acc
+
+train_path: ./input/train_mini/
+val_path: ./input/val/
+
+train:
+  num_labels: 4
+  n_splits: 3
+  trn_fold: [0, 1, 2]
+  epoch: 3
+
+transform:
+  name: aug_transform1
+  size: 384,384
+
+strong_transform:
+  name: mixup
+  params:
+    alpha: 0.2
+
+
+train_loader:
+  batch_size: 2
+  shuffle: True
+  num_workers: 2
+  pin_memory: False
+  drop_last: True
+
+val_loader:
+  batch_size: 2
+  shuffle: False
+  num_workers: 2
+  pin_memory: False
+  drop_last: False
+
+model: resnet18d
+
+optimizer:
+  name: AdamW
+  lr: 1e-4
+
+scheduler:
+  name: CosineAnnealingWarmRestarts
+  eta_min: 1e-7
+  cycle: 2
+
+loss: nn.CrossEntropyLoss()
+

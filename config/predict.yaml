@@ -1,0 +1,55 @@
+seed: 2021
+log_path: ./log/
+config_path: ./config/
+weight_path: D:/work/python/signate/lemon_compe_phalanx/weight/
+header: epoch train_loss train_acc val_loss val_acc
+
+root: D:/work/python/signate/lemon_compe_phalanx/
+train_path: input/preprocess/v3/train_images/
+test_path: input/preprocess/test_images_2/
+
+train:
+  num_labels: 4
+  n_splits: 5
+  trn_fold: [0, 1, 2]
+  epoch: 3
+  accumulate: 1
+
+transform:
+  name: met_transform1
+  size: 456,456
+
+strong_transform:
+  name: resizemix
+  params:
+    alpha: 0.1
+    beta: 0.6
+
+
+train_loader:
+  batch_size: 6
+  shuffle: True
+  num_workers: 2
+  pin_memory: False
+  drop_last: True
+
+val_loader:
+  batch_size: 6
+  shuffle: False
+  num_workers: 2
+  pin_memory: False
+  drop_last: False
+
+model: tf_efficientnet_b3_ns
+
+optimizer:
+  name: Adam
+  lr: 1e-4
+
+scheduler:
+  name: CosineAnnealingWarmRestarts
+  eta_min: 1e-6
+  cycle: 1
+
+loss: nn.CrossEntropyLoss
+
